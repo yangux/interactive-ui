@@ -26,7 +26,6 @@ class Circle {
 
   draw(context) {
     context.beginPath();
-
     context.strokeStyle = this.color;
     context.textAlign = "center";
     context.textBaseline = "middle";
@@ -40,30 +39,21 @@ class Circle {
 
   // 움직임 주기 - 한 장씩 위치 바꿔가며 그리기
   update() {
-    // 화면 지우기
-    // context.clearRect(x, y, w, h)
-    context.clearRect(0, 0, window_width, window_height);
-
     // 원 그리기
-    this.text = hit_counter;
     this.draw(context);
 
     // 화면 가장자리에 닿으면 방향 바꾸기
     if (this.xpos + this.radius > window_width) {
       this.dx = -this.dx;
-      hit_counter++;
     }
     if (this.xpos - this.radius < 0) {
       this.dx = -this.dx;
-      hit_counter++;
     }
     if (this.ypos + this.radius > window_height) {
       this.dy = -this.dy;
-      hit_counter++;
     }
     if (this.ypos - this.radius < 0) {
       this.dy = -this.dy;
-      hit_counter++;
     }
 
     this.xpos += this.dx;
@@ -71,18 +61,38 @@ class Circle {
   }
 }
 
-let hit_counter = 0;
-let random_x = Math.random() * window_width;
-let random_y = Math.random() * window_height;
+// collision detection
+// 첫번째 object의 위치: xpos1, ypos1
+// 두번째 object의 위치: xpos2, ypos2
+let getDistance = function (xpos1, ypos1, xpos2, ypos2) {
+  let result = Math.sqrt(
+    Math.pow(xpos2 - xpos1, 2) + Math.pow(ypos2 - ypos1, 2)
+  );
+  return result;
+};
 
-let my_circle = new Circle(random_x, random_y, 50, "black", hit_counter, 1);
+let all_circles = [];
+let randomNumber = function (min, max) {
+  let result = Math.random() * (max - min) + min;
+  return result;
+};
 
-my_circle.draw(context);
+for (let i = 0; i < 10; i++) {
+  let radius = 100;
+  let random_x = randomNumber(radius, window_width - radius);
+  let random_y = randomNumber(radius, window_height - radius);
+
+  let my_circle = new Circle(random_x, random_y, radius, "black", "A", 2);
+  all_circles.push(my_circle);
+}
 
 let updateCircle = function () {
-  // requestAnimationFrame(callback): window 메서드, 애니메이션 리페인트(업데이트) 전에 이 메서드를 호출해야 함
-  // https://developer.mozilla.org/ko/docs/Web/API/window/requestAnimationFrame
   requestAnimationFrame(updateCircle);
-  my_circle.update();
+
+  context.clearRect(0, 0, window_width, window_height);
+
+  all_circles.forEach((e) => {
+    e.update();
+  });
 };
 updateCircle();
