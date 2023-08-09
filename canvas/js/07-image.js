@@ -26,12 +26,10 @@ function createImage(context, imagePath, xpos, ypos, width, height) {
   let myImage = document.createElement("img");
   myImage.src = imagePath;
   myImage.onload = function () {
-    // drawImage(image, dx, dy)
     context.drawImage(myImage, xpos, ypos, width, height);
   };
 }
-
-let image = new Image("./img/jordan.png", 50, 50, 26, 32);
+let image = new Image("./img/jordan.png", 50, 50, 50, 50);
 createImage(
   context,
   image.imagePath,
