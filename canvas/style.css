@@ -45,6 +45,9 @@ body {
   font-size: 1.8rem;
   text-align: center;
 }
+#sendName input::placeholder {
+  color: #bbb;
+}
 #sendName button {
   border: none;
   outline: none;
